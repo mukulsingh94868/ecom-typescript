@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# E-Commerce Typescript App
 
-## Getting Started
+This is a simple Next.js e-commerce app built with TypeScript. It demonstrates:
 
-First, run the development server:
+- fetching products and categories from a remote API
+- filtering products by category
+- storing selected product state for a detail page
+- adding products to a cart using React context
+- displaying cart totals in a header
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Data fetching flow
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. API helper: `lib/api.ts`
+   - `fetchProducts(categoryId?)` fetches products from `https://api.escuelajs.co/api/v1/products`
+   - `fetchCategories()` fetches categories from `https://api.escuelajs.co/api/v1/categories`
+   - When a `categoryId` is provided, products are requested with `?categoryId=` and it shows the product detail by Id.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. Home page: `app/page.tsx`
+   - `useEffect` loads all products and categories on first render and there is the dropdown of categories, which shows all the categories of prodcuts, when categories is select, it filters the whole data and render the selected data.
+   - `handleFilter(categoryId?)` updates the selected category and refetches products.
+   - If a filter is active and there are no matching products, the page shows `No product found`.
+   - Otherwise the product grid is rendered.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Product listing: `components/ProductCard.tsx`
+   - Each product card links to the product detail page.
+   - Clicking a card sets the selected product in `ProductContext`.
+   - it renders all the data, but to show only, image, title, description and price with "Add to Cart" button.
+   - Click on "Add to Cart" button, it add the quantity and price to the header section.
 
-## Learn More
+## Cart behavior
 
-To learn more about Next.js, take a look at the following resources:
+1. Cart context: `context/CartContext.tsx`
+   - Provides `cart`, `addToCart(product)`.
+   - `cart` is stored in React state inside the provider.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. Product detail page: `app/product/[id]/page.tsx`
+   - Reads the selected product from `ProductContext`.
+   - Clicking `Add to My Cart` calls `addToCart(selectedProduct)`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. Header summary: `components/Header.tsx`
+   - Reads the cart from `CartContext`.
+   - Calculates item count and total price.
+   - Renders the summary in the header.
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The app relies on `ProductContext` to keep a selected product available for the detail page.
+- Remote images must be allowed in `next.config.ts` for `next/image` to load external URLs.
