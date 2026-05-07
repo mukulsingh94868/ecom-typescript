@@ -16,8 +16,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setCart((prev) => [...prev, product]);
   };
 
+  const removeFromCart = (productId: string) => {
+    setCart((prev) => prev.filter((item: any) => item.id !== productId));
+  }
+
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );

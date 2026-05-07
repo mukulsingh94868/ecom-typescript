@@ -2,20 +2,19 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 
-const Footer = () => {
+const Header = () => {
   const context = useContext(CartContext);
   if (!context) return null;
 
   const total = context.cart.reduce((sum, p) => sum + p.price, 0);
-
   return (
-    <footer className="border-t border-black/20 py-2.5 px-3.8 mt-auto">
+    <header>
       <div className="max-w-5xl mx-auto flex items-center">
         🛒 Items: {context.cart.length}
         <div className="text-2xl text-black ms-auto">Total: ₹ {total}</div>
       </div>
-    </footer>
+    </header>
   );
-}
+};
 
-export default Footer;
+export default Header;
