@@ -9,6 +9,14 @@ export const fetchProducts = async (categoryId?: string) => {
   return res.json();
 };
 
+export const fetchProductById = async (id: number) => {
+  const res = await fetch(`${BASE_URL}/products/${id}`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch product by id");
+  }
+  return res.json();
+};
+
 export const fetchCategories = async () => {
   const res = await fetch(`${BASE_URL}/categories`);
   return res.json();
