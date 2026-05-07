@@ -1,9 +1,6 @@
-interface Props {
-  categories: any[];
-  onChange: (categoryId?: string) => void;
-}
+import { TProps } from "@/types/product";
 
-const Filters = ({ categories, onChange }: Props) => {
+const Filters = ({ categories, onChange }: TProps) => {
   return (
     <select
       onChange={(e) => onChange(e.target.value || undefined)}
@@ -17,6 +14,6 @@ const Filters = ({ categories, onChange }: Props) => {
       ))}
     </select>
   );
-}
+};
 
 export default Filters;

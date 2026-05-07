@@ -1,11 +1,6 @@
 "use client";
 import { createContext, useState, ReactNode } from "react";
-import { Product } from "../types/product";
-
-interface ProductContextType {
-  selectedProduct: Product | null;
-  setSelectedProduct: (product: Product) => void;
-}
+import { Product, ProductContextType } from "../types/product";
 
 export const ProductContext = createContext<ProductContextType | null>(null);
 
